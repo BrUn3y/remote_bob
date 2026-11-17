@@ -1,6 +1,6 @@
 # Remote Bob website
 
-Static, Spanish-language project website inspired by Carbon for AI. It uses
+Static, English-language project website inspired by Carbon for AI. It uses
 Carbon's White and Gray 100 palettes and locally hosted IBM Plex fonts. The
 font license is included in `assets/fonts/OFL.txt`. No package installation or
 JavaScript build is required.

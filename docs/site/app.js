@@ -41,15 +41,12 @@ const mobileNavigation = document.querySelector("#mobile-nav");
 function closeMenu() {
   mobileNavigation.hidden = true;
   menuButton.setAttribute("aria-expanded", "false");
-  menuButton.setAttribute("aria-label", "Abrir menú");
+  menuButton.setAttribute("aria-label", "Open menu");
 }
 menuButton.addEventListener("click", () => {
   const expanded = menuButton.getAttribute("aria-expanded") !== "true";
   menuButton.setAttribute("aria-expanded", String(expanded));
-  menuButton.setAttribute(
-    "aria-label",
-    expanded ? "Cerrar menú" : "Abrir menú",
-  );
+  menuButton.setAttribute("aria-label", expanded ? "Close menu" : "Open menu");
   mobileNavigation.hidden = !expanded;
 });
 mobileNavigation.querySelectorAll("a").forEach((link) => {
@@ -128,7 +125,7 @@ async function copyText(text) {
   const previouslyFocused = document.activeElement;
   const field = document.createElement("textarea");
   field.value = text;
-  field.setAttribute("aria-label", "Código para copiar");
+  field.setAttribute("aria-label", "Code to copy");
   field.style.cssText =
     "position:fixed;inset:0 auto auto 0;opacity:0;pointer-events:none";
   document.body.append(field);
@@ -153,14 +150,12 @@ document
         await copyText(source.textContent.trim());
         const icon = button.querySelector("use");
         icon.setAttribute("href", "#i-check");
-        announce("Código copiado al portapapeles.");
+        announce("Code copied to clipboard.");
         setTimeout(() => {
           icon.setAttribute("href", "#i-copy");
         }, 2000);
       } catch (_) {
-        announce(
-          "No se pudo copiar. Selecciona el código y cópialo manualmente.",
-        );
+        announce("Unable to copy. Select the code and copy it manually.");
       }
     });
   });

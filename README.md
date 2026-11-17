@@ -1,7 +1,7 @@
 # Remote Bob
 
-[Explora la página del proyecto](https://brun3y.github.io/remote_bob/) ·
-Diseño inspirado en Carbon for AI, con modos claro y oscuro.
+[Explore the project website](https://brun3y.github.io/remote_bob/) ·
+Design inspired by Carbon for AI, with light and dark modes.
 
 <p align="center">
   <a href="docs/media/remote-bob-slack-en.mp4">
