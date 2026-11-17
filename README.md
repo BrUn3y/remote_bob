@@ -1,5 +1,8 @@
 # Remote Bob
 
+[Explora la página del proyecto](https://brun3y.github.io/remote_bob/) ·
+Diseño inspirado en Carbon for AI, con modos claro y oscuro.
+
 <p align="center">
   <a href="docs/media/remote-bob-slack-en.mp4">
     <img src="docs/media/remote-bob-slack-en.gif" alt="Remote Bob in Slack - complete English tutorial (1:50)" width="960">

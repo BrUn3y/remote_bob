@@ -1,0 +1,1019 @@
+<!doctype html>
+<html lang="es" data-theme="white">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Remote Bob conecta IBM Bob Shell con una API REST, Slack y tareas programadas. Ejecuta, verifica y automatiza desde un solo contenedor."
+    />
+    <meta name="theme-color" content="#161616" />
+    <meta
+      property="og:title"
+      content="Remote Bob — De una idea a la ejecución"
+    />
+    <meta
+      property="og:description"
+      content="Un harness para IBM Bob Shell. API REST, Slack y automatización con verificación en un solo contenedor."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://brun3y.github.io/remote_bob/" />
+    <link rel="canonical" href="https://brun3y.github.io/remote_bob/" />
+    <title>Remote Bob — De una idea a la ejecución</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="assets/fonts/IBMPlexSans-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      try {
+        const saved = localStorage.getItem("remote-bob-theme");
+        document.documentElement.dataset.theme =
+          saved === "white" || saved === "g100"
+            ? saved
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "g100"
+              : "white";
+      } catch (_) {
+        document.documentElement.dataset.theme = matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches
+          ? "g100"
+          : "white";
+      }
+    </script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <svg
+      class="icon-definitions"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <defs>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M4 12h15m-6-6 6 6-6 6" />
+        </symbol>
+        <symbol id="i-external" viewBox="0 0 24 24">
+          <path d="M14 4h6v6M20 4 10 14m0-9H4v15h15v-6" />
+        </symbol>
+        <symbol id="i-code" viewBox="0 0 24 24">
+          <path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18" />
+        </symbol>
+        <symbol id="i-terminal" viewBox="0 0 24 24">
+          <path d="M3 4h18v16H3zm3 4 4 4-4 4m7 0h5" />
+        </symbol>
+        <symbol id="i-cycle" viewBox="0 0 24 24">
+          <path
+            d="M20 8a8.5 8.5 0 0 0-15-2L2 9m0-6v6h6m-4 7a8.5 8.5 0 0 0 15 2l3-3m0 6v-6h-6"
+          />
+        </symbol>
+        <symbol id="i-chat" viewBox="0 0 24 24">
+          <path d="M3 3h18v14H9l-6 4zM7 8h10M7 12h7" />
+        </symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 6v6l4 3" />
+        </symbol>
+        <symbol id="i-stream" viewBox="0 0 24 24">
+          <path d="M3 6h11m3 0h4M3 12h4m3 0h11M3 18h11m3 0h4" />
+          <circle cx="15.5" cy="6" r="1.5" />
+          <circle cx="8.5" cy="12" r="1.5" />
+          <circle cx="15.5" cy="18" r="1.5" />
+        </symbol>
+        <symbol id="i-box" viewBox="0 0 24 24">
+          <path
+            d="m12 2 9 5v10l-9 5-9-5V7zm0 10L3 7m9 5 9-5m-9 5v10M7.5 4.5l9 5V14"
+          />
+        </symbol>
+        <symbol id="i-copy" viewBox="0 0 24 24">
+          <path d="M8 8h12v13H8zM16 8V3H3v13h5" />
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24">
+          <path d="m4 12 5 5L20 6" />
+        </symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4" />
+          <path
+            d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"
+          />
+        </symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24">
+          <path d="M20.5 14.5A9 9 0 0 1 9.5 3.5a9 9 0 1 0 11 11Z" />
+        </symbol>
+        <symbol id="i-github" viewBox="0 0 24 24">
+          <path
+            d="M9 21v-4c-4 1-4-2-6-2m12 6v-4a3 3 0 0 0-.8-2.2c2.8-.3 5.8-1.4 5.8-6.3a5 5 0 0 0-1.3-3.4A4.5 4.5 0 0 0 18.6 2S17.5 1.7 15 3.3a12 12 0 0 0-6 0C6.5 1.7 5.4 2 5.4 2a4.5 4.5 0 0 0-.1 3.1A5 5 0 0 0 4 8.5c0 4.9 3 6 5.8 6.3A3 3 0 0 0 9 17"
+          />
+        </symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24">
+          <path d="M3 6h18M3 12h18M3 18h18" />
+        </symbol>
+        <symbol id="i-book" viewBox="0 0 24 24">
+          <path
+            d="M12 5C9 3 5 3 2 4v15c3-1 7-1 10 1m0-15c3-2 7-2 10-1v15c-3-1-7-1-10 1zm-7 3h4m-4 4h4m6-4h4m-4 4h4"
+          />
+        </symbol>
+        <symbol id="i-spark" viewBox="0 0 24 24">
+          <path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <header class="shell-header">
+      <a class="brand" href="#inicio" aria-label="Remote Bob, inicio"
+        ><span>Remote</span> <strong>Bob</strong
+        ><span class="brand-divider"></span
+        ><span class="brand-caption">IBM Bob Harness</span></a
+      >
+      <nav class="desktop-nav" aria-label="Navegación principal">
+        <a href="#capacidades">Explorar</a
+        ><a href="#arquitectura">Cómo funciona</a><a href="#api">API</a
+        ><a href="#recursos">Recursos</a>
+      </nav>
+      <div class="header-actions">
+        <div class="theme-switch" role="group" aria-label="Apariencia">
+          <button
+            type="button"
+            data-theme-value="white"
+            aria-label="Modo claro"
+            aria-pressed="true"
+            title="Modo claro"
+          >
+            <svg class="icon"><use href="#i-sun" /></svg>
+          </button>
+          <button
+            type="button"
+            data-theme-value="g100"
+            aria-label="Modo oscuro"
+            aria-pressed="false"
+            title="Modo oscuro"
+          >
+            <svg class="icon"><use href="#i-moon" /></svg>
+          </button>
+        </div>
+        <a
+          class="header-github"
+          href="https://github.com/BrUn3y/remote_bob"
+          aria-label="Ver repositorio en GitHub"
+          ><svg class="icon"><use href="#i-github" /></svg
+          ><span>GitHub</span></a
+        >
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Abrir menú"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <svg class="icon"><use href="#i-menu" /></svg>
+        </button>
+      </div>
+      <nav
+        id="mobile-nav"
+        class="mobile-nav"
+        aria-label="Navegación móvil"
+        hidden
+      >
+        <a href="#capacidades">Explorar</a
+        ><a href="#arquitectura">Cómo funciona</a><a href="#api">API</a
+        ><a href="#recursos">Recursos</a><a href="#comenzar">Comenzar</a>
+      </nav>
+    </header>
+
+    <main id="contenido">
+      <section id="inicio" class="hero page-width" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="status-dot"></span> AUTOMATIZACIÓN CON IBM BOB SHELL
+          </div>
+          <h1 id="hero-title">De una idea<br />a la <span>ejecución.</span></h1>
+          <p class="hero-description">
+            Tu agente de desarrollo, conectado.<br />Ejecuta tareas, verifica
+            resultados y automatiza flujos desde tu API o Slack. Todo en un
+            contenedor.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#comenzar"
+              >Comenzar ahora<svg class="icon"><use href="#i-arrow" /></svg></a
+            ><a
+              class="button button-secondary"
+              href="https://github.com/BrUn3y/remote_bob"
+              >Explorar el código<svg class="icon"><use href="#i-github" /></svg
+            ></a>
+          </div>
+          <div class="hero-tags">
+            <span>Bob Shell 2.0.5</span><span>Python + FastAPI</span
+            ><span>Podman / Docker</span>
+          </div>
+        </div>
+
+        <div
+          class="hero-visual"
+          role="img"
+          aria-label="API REST, Slack y cron conectados a Bob Shell. El harness ejecuta, verifica y reintenta las tareas."
+        >
+          <div class="visual-topline">
+            <span><span class="small-cross">✳</span> AGENT ORCHESTRATION</span
+            ><span class="visual-coordinate">FIG. 01 / BOB</span>
+          </div>
+          <svg
+            class="orchestration-art"
+            viewBox="0 0 560 460"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="orbit-gradient" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#78a9ff" />
+                <stop offset=".5" stop-color="#be95ff" />
+                <stop offset="1" stop-color="#4589ff" />
+              </linearGradient>
+              <linearGradient id="core-gradient" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#262c49" />
+                <stop offset="1" stop-color="#171822" />
+              </linearGradient>
+              <radialGradient id="art-glow">
+                <stop stop-color="#4589ff" stop-opacity=".24" />
+                <stop offset="1" stop-color="#4589ff" stop-opacity="0" />
+              </radialGradient>
+              <pattern
+                id="dot-grid"
+                width="24"
+                height="24"
+                patternUnits="userSpaceOnUse"
+              >
+                <circle cx="1" cy="1" r=".7" fill="#a6c8ff" opacity=".2" />
+              </pattern>
+            </defs>
+            <rect width="560" height="460" fill="url(#dot-grid)" />
+            <ellipse
+              cx="280"
+              cy="234"
+              rx="235"
+              ry="210"
+              fill="url(#art-glow)"
+            />
+            <g fill="none" stroke="#393f55" stroke-width="1">
+              <ellipse
+                cx="280"
+                cy="220"
+                rx="180"
+                ry="92"
+                transform="rotate(-30 280 220)"
+              />
+              <ellipse
+                cx="280"
+                cy="220"
+                rx="180"
+                ry="92"
+                transform="rotate(30 280 220)"
+              />
+              <path
+                d="M280 49v86m0 168v89M65 220h112m206 0h112"
+                stroke-dasharray="3 6"
+              />
+            </g>
+            <g class="orbit-lines" fill="none" stroke="url(#orbit-gradient)">
+              <ellipse cx="280" cy="220" rx="167" ry="166" opacity=".35" />
+              <ellipse
+                cx="280"
+                cy="220"
+                rx="134"
+                ry="134"
+                opacity=".35"
+                stroke-dasharray="2 8"
+              />
+              <ellipse cx="280" cy="220" rx="101" ry="101" opacity=".55" />
+            </g>
+            <g class="art-particle" fill="#be95ff">
+              <circle cx="144" cy="125" r="4" />
+              <circle cx="413" cy="319" r="4" />
+            </g>
+            <g fill="none" stroke="url(#orbit-gradient)" stroke-width="1.5">
+              <path d="M143 125h56l29 40M417 125h-56l-29 40M280 301v58" />
+            </g>
+            <rect
+              x="205"
+              y="145"
+              width="150"
+              height="150"
+              rx="1"
+              fill="url(#core-gradient)"
+              stroke="url(#orbit-gradient)"
+              stroke-width="1.5"
+            />
+            <path
+              d="M205 164v-19h19m112 0h19v19m0 112v19h-19m-112 0h-19v-19"
+              fill="none"
+              stroke="#d4bbff"
+              stroke-width="2"
+            />
+            <g stroke="url(#orbit-gradient)" stroke-width="3" fill="none">
+              <path
+                d="m247 195-15 15 15 15m66-30 15 15-15 15M280 182v56m-24-42 48 28m-48 0 48-28"
+              />
+            </g>
+            <text
+              x="280"
+              y="263"
+              text-anchor="middle"
+              fill="#f4f4f4"
+              font-size="19"
+              class="art-sans"
+            >
+              Bob Shell
+            </text>
+            <text
+              x="280"
+              y="282"
+              text-anchor="middle"
+              fill="#a6c8ff"
+              font-size="9"
+              letter-spacing="2"
+              class="art-mono"
+            >
+              HEADLESS RUNTIME
+            </text>
+            <g class="art-mono" font-size="11" fill="#dde1e6">
+              <rect
+                x="46"
+                y="99"
+                width="116"
+                height="48"
+                fill="#20232e"
+                stroke="#495570"
+              />
+              <text x="104" y="128" text-anchor="middle">
+                &lt;/&gt; REST API
+              </text>
+              <rect
+                x="398"
+                y="99"
+                width="116"
+                height="48"
+                fill="#20232e"
+                stroke="#495570"
+              />
+              <text x="456" y="128" text-anchor="middle"># Slack</text>
+              <rect
+                x="222"
+                y="354"
+                width="116"
+                height="42"
+                fill="#20232e"
+                stroke="#495570"
+              />
+              <text x="280" y="380" text-anchor="middle">◷ cron</text>
+            </g>
+            <circle cx="280" cy="54" r="4" fill="#a6c8ff" />
+            <circle cx="113" cy="220" r="3" fill="#78a9ff" />
+            <circle cx="447" cy="220" r="3" fill="#78a9ff" />
+            <text
+              x="43"
+              y="429"
+              fill="#a8afc2"
+              font-size="9"
+              letter-spacing="1"
+              class="art-mono"
+            >
+              INPUT → EXECUTE → VERIFY → OUTPUT
+            </text>
+            <path d="M483 424h32m-7-5 7 5-7 5" fill="none" stroke="#a6c8ff" />
+          </svg>
+          <div class="visual-bottomline">
+            <span class="ai-label"
+              ><svg class="icon"><use href="#i-spark" /></svg> AI-powered</span
+            ><span>Un prompt. Un flujo completo.</span>
+          </div>
+        </div>
+      </section>
+
+      <div
+        class="at-a-glance page-width"
+        aria-label="Características principales"
+      >
+        <div>
+          <svg class="icon"><use href="#i-code" /></svg
+          ><span>Una API para tu agente</span
+          ><span class="glance-index">01</span>
+        </div>
+        <div>
+          <svg class="icon"><use href="#i-cycle" /></svg
+          ><span>Ejecutar · verificar · reintentar</span
+          ><span class="glance-index">02</span>
+        </div>
+        <div>
+          <svg class="icon"><use href="#i-chat" /></svg
+          ><span>Conversaciones en Slack</span
+          ><span class="glance-index">03</span>
+        </div>
+        <div>
+          <svg class="icon"><use href="#i-box" /></svg
+          ><span>Un solo contenedor</span><span class="glance-index">04</span>
+        </div>
+      </div>
+
+      <section
+        id="capacidades"
+        class="section page-width"
+        aria-labelledby="capabilities-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow section-number">01 / CAPACIDADES</p>
+            <h2 id="capabilities-title">
+              Menos pasos.<br />Más posibilidades.
+            </h2>
+          </div>
+          <p>
+            El poder de Bob Shell, con las conexiones que necesitas para llevar
+            tus ideas al siguiente paso.
+          </p>
+        </div>
+        <div class="capability-grid">
+          <a class="capability-tile" href="#api"
+            ><svg class="feature-icon"><use href="#i-code" /></svg
+            ><span class="tile-kicker">CONECTA</span>
+            <h3>Una API, múltiples caminos</h3>
+            <p>
+              Envía prompts desde cualquier aplicación. Elige ejecución
+              síncrona, trabajos en segundo plano o streaming.
+            </p>
+            <span class="tile-footer"
+              ><code>/invoke · /jobs · /stream</code
+              ><svg class="icon"><use href="#i-arrow" /></svg></span
+          ></a>
+          <a class="capability-tile ai-tile" href="#arquitectura"
+            ><svg class="feature-icon"><use href="#i-cycle" /></svg
+            ><span class="tile-kicker">ORQUESTA</span>
+            <h3>Resultados que se verifican</h3>
+            <p>
+              Define una comprobación. El harness ejecuta, valida y devuelve el
+              error a Bob para un nuevo intento.
+            </p>
+            <span class="tile-footer"
+              ><code>/run</code
+              ><svg class="icon"><use href="#i-arrow" /></svg></span
+          ></a>
+          <a
+            class="capability-tile"
+            href="https://github.com/BrUn3y/remote_bob/blob/anin/SLACK_SETUP.md"
+            ><svg class="feature-icon"><use href="#i-chat" /></svg
+            ><span class="tile-kicker">COLABORA</span>
+            <h3>Tu equipo, en el mismo hilo</h3>
+            <p>
+              Habla con Bob desde Slack. Conserva el contexto, comparte archivos
+              y cancela tareas sin salir de la conversación.
+            </p>
+            <span class="tile-footer"
+              ><span>Explorar integración</span
+              ><svg class="icon"><use href="#i-external" /></svg></span
+          ></a>
+          <a
+            class="capability-tile"
+            href="https://github.com/BrUn3y/remote_bob/blob/anin/README.md#5-schedule-recurring-tasks-cron"
+            ><svg class="feature-icon"><use href="#i-clock" /></svg
+            ><span class="tile-kicker">AUTOMATIZA</span>
+            <h3>El trabajo sigue su curso</h3>
+            <p>
+              Programa tareas con cron, persiste su configuración y entrega los
+              resultados en un canal de Slack.
+            </p>
+            <span class="tile-footer"
+              ><code>/schedules</code
+              ><svg class="icon"><use href="#i-external" /></svg></span
+          ></a>
+          <a class="capability-tile" href="#api"
+            ><svg class="feature-icon"><use href="#i-stream" /></svg
+            ><span class="tile-kicker">OBSERVA</span>
+            <h3>Cada paso, en tiempo real</h3>
+            <p>
+              Sigue la salida con Server-Sent Events. Consulta estados, intentos
+              y resultados desde la misma API.
+            </p>
+            <span class="tile-footer"
+              ><code>/jobs/{id}/stream</code
+              ><svg class="icon"><use href="#i-arrow" /></svg></span
+          ></a>
+          <a class="capability-tile" href="#comenzar"
+            ><svg class="feature-icon"><use href="#i-box" /></svg
+            ><span class="tile-kicker">DESPLIEGA</span>
+            <h3>Todo en un contenedor</h3>
+            <p>
+              FastAPI, Bob Shell, Slack y cron. Usa Podman o Docker y conserva
+              tus archivos en el volumen de workspace.
+            </p>
+            <span class="tile-footer"
+              ><span>Ver inicio rápido</span
+              ><svg class="icon"><use href="#i-arrow" /></svg></span
+          ></a>
+        </div>
+      </section>
+
+      <section
+        id="arquitectura"
+        class="architecture-section"
+        aria-labelledby="architecture-title"
+      >
+        <div class="page-width section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow section-number">02 / CÓMO FUNCIONA</p>
+              <h2 id="architecture-title">
+                Un prompt.<br />Un ciclo que avanza.
+              </h2>
+            </div>
+            <div>
+              <p>
+                Bob Shell ejecuta la tarea. El harness coordina el proceso y
+                comprueba el resultado con el comando que tú defines.
+              </p>
+              <a
+                class="text-link"
+                href="https://github.com/BrUn3y/remote_bob/blob/anin/README.md#post-run--orchestrated-run-verify--retry"
+                >Conocer la orquestación<svg class="icon">
+                  <use href="#i-arrow" /></svg
+              ></a>
+            </div>
+          </div>
+          <div class="flow-grid">
+            <article>
+              <span class="flow-step">01</span
+              ><svg class="feature-icon"><use href="#i-terminal" /></svg>
+              <h3>Ejecutar</h3>
+              <p>
+                Tu prompt llega por la API. Bob trabaja en el contenedor y
+                genera el resultado.
+              </p>
+              <code>bob run &lt;prompt&gt;</code>
+            </article>
+            <article>
+              <span class="flow-step">02</span
+              ><svg class="feature-icon"><use href="#i-check" /></svg>
+              <h3>Verificar</h3>
+              <p>
+                El harness ejecuta tu comando de validación. Un código de salida
+                0 indica éxito.
+              </p>
+              <code>check: "pytest -q"</code>
+            </article>
+            <article>
+              <span class="flow-step">03</span
+              ><svg class="feature-icon"><use href="#i-cycle" /></svg>
+              <h3>Mejorar</h3>
+              <p>
+                Si la validación falla, Bob recibe el error y reintenta hasta el
+                límite configurado.
+              </p>
+              <code>max_attempts: 3</code>
+            </article>
+          </div>
+          <div class="flow-note">
+            <svg class="icon"><use href="#i-spark" /></svg>
+            <p>
+              Tú defines qué significa “listo”. El harness se encarga del
+              ciclo.<span
+                >Disponible en <code>POST /run</code> y tareas programadas.
+                Slack utiliza <code>/jobs</code>.</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="api" class="section page-width" aria-labelledby="api-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow section-number">03 / PARA DESARROLLADORES</p>
+            <h2 id="api-title">De tu código<br />a la acción.</h2>
+          </div>
+          <p>
+            Una interfaz REST sencilla sobre Bob Shell. Integra el agente con
+            las herramientas y el lenguaje que ya usas.
+          </p>
+        </div>
+        <div class="api-grid">
+          <div class="code-example">
+            <div class="code-toolbar">
+              <div
+                class="tabs"
+                role="tablist"
+                aria-label="Lenguaje del ejemplo"
+              >
+                <button
+                  id="tab-curl"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="panel-curl"
+                  tabindex="0"
+                >
+                  cURL</button
+                ><button
+                  id="tab-python"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-python"
+                  tabindex="-1"
+                >
+                  Python</button
+                ><button
+                  id="tab-javascript"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="panel-javascript"
+                  tabindex="-1"
+                >
+                  JavaScript
+                </button>
+              </div>
+              <button
+                class="copy-button"
+                type="button"
+                data-copy-active
+                aria-label="Copiar ejemplo"
+                title="Copiar ejemplo"
+              >
+                <svg class="icon"><use href="#i-copy" /></svg>
+              </button>
+            </div>
+            <div
+              id="panel-curl"
+              role="tabpanel"
+              aria-labelledby="tab-curl"
+              tabindex="0"
+            >
+              <pre
+                tabindex="0"
+              ><code><span class="syntax-comment"># Ejecuta, verifica y reintenta</span>
+<span class="syntax-command">curl</span> -X POST http://localhost:8080/run \
+  -H <span class="syntax-string">'Content-Type: application/json'</span> \
+  -d <span class="syntax-string">'{
+    "prompt": "Implementa add() en calc.py",
+    "check": "pytest -q",
+    "max_attempts": 3,
+    "workdir": "/workspace"
+  }'</span></code></pre>
+            </div>
+            <div
+              id="panel-python"
+              role="tabpanel"
+              aria-labelledby="tab-python"
+              tabindex="0"
+              hidden
+            >
+              <pre
+                tabindex="0"
+              ><code><span class="syntax-comment"># pip install requests</span>
+<span class="syntax-command">import</span> requests
+
+response = requests.post(
+    <span class="syntax-string">"http://localhost:8080/run"</span>,
+    json={
+        <span class="syntax-string">"prompt"</span>: <span class="syntax-string">"Implementa add() en calc.py"</span>,
+        <span class="syntax-string">"check"</span>: <span class="syntax-string">"pytest -q"</span>,
+        <span class="syntax-string">"max_attempts"</span>: 3,
+        <span class="syntax-string">"workdir"</span>: <span class="syntax-string">"/workspace"</span>,
+    },
+    timeout=30,
+)
+response.raise_for_status()
+<span class="syntax-command">print</span>(response.json())</code></pre>
+            </div>
+            <div
+              id="panel-javascript"
+              role="tabpanel"
+              aria-labelledby="tab-javascript"
+              tabindex="0"
+              hidden
+            >
+              <pre
+                tabindex="0"
+              ><code><span class="syntax-command">const</span> response = <span class="syntax-command">await</span> fetch(
+  <span class="syntax-string">'http://localhost:8080/run'</span>, {
+    method: <span class="syntax-string">'POST'</span>,
+    headers: { <span class="syntax-string">'Content-Type'</span>: <span class="syntax-string">'application/json'</span> },
+    body: JSON.stringify({
+      prompt: <span class="syntax-string">'Implementa add() en calc.py'</span>,
+      check: <span class="syntax-string">'pytest -q'</span>,
+      max_attempts: 3,
+      workdir: <span class="syntax-string">'/workspace'</span>
+    })
+  }
+);
+<span class="syntax-command">if</span> (!response.ok) <span class="syntax-command">throw new</span> Error(response.status);
+console.log(<span class="syntax-command">await</span> response.json());</code></pre>
+            </div>
+            <div class="code-response">
+              <span class="response-status">202 Accepted</span
+              ><code>{ "id": "…", "status": "running" }</code>
+            </div>
+            <p class="code-caption">
+              Ejemplo para tu instancia local. Consulta el resultado con
+              <code>GET /jobs/{id}</code>.
+            </p>
+          </div>
+          <div class="endpoint-list">
+            <h3>Un endpoint para cada paso</h3>
+            <p>Lo esencial, sin rodeos.</p>
+            <dl>
+              <div>
+                <dt>
+                  <span class="method method-get">GET</span><code>/health</code>
+                </dt>
+                <dd>Comprueba el servicio</dd>
+              </div>
+              <div>
+                <dt><span class="method">POST</span><code>/invoke</code></dt>
+                <dd>Ejecuta un prompt</dd>
+              </div>
+              <div>
+                <dt><span class="method">POST</span><code>/jobs</code></dt>
+                <dd>Trabaja en segundo plano</dd>
+              </div>
+              <div>
+                <dt><span class="method">POST</span><code>/run</code></dt>
+                <dd>Ejecuta con verificación</dd>
+              </div>
+              <div>
+                <dt><span class="method">POST</span><code>/stream</code></dt>
+                <dd>Recibe la salida en vivo</dd>
+              </div>
+              <div>
+                <dt><span class="method">POST</span><code>/schedules</code></dt>
+                <dd>Programa la siguiente tarea</dd>
+              </div>
+            </dl>
+            <a
+              class="text-link"
+              href="https://github.com/BrUn3y/remote_bob/blob/anin/httpie/remote_bob.openapi.json"
+              >Consultar especificación OpenAPI<svg class="icon">
+                <use href="#i-external" /></svg
+            ></a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="comenzar"
+        class="quickstart-section"
+        aria-labelledby="quickstart-title"
+      >
+        <div class="page-width section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow section-number">04 / INICIO RÁPIDO</p>
+              <h2 id="quickstart-title">
+                Tu siguiente idea<br />empieza aquí.
+              </h2>
+            </div>
+            <div>
+              <p>
+                Necesitas Git, Podman o Docker y una API key de IBM Bob. Slack
+                es opcional.
+              </p>
+              <div
+                class="engine-switch"
+                role="group"
+                aria-label="Motor de contenedores"
+              >
+                <button type="button" data-engine="podman" aria-pressed="true">
+                  Podman</button
+                ><button
+                  type="button"
+                  data-engine="docker"
+                  aria-pressed="false"
+                >
+                  Docker
+                </button>
+              </div>
+            </div>
+          </div>
+          <ol class="quickstart-grid">
+            <li>
+              <div class="step-heading">
+                <span>01</span>
+                <h3>Clona y configura</h3>
+              </div>
+              <p>
+                Copia la plantilla y agrega tu clave en
+                <code>BOBSHELL_API_KEY</code>.
+              </p>
+              <div class="quick-code">
+                <pre
+                  tabindex="0"
+                  id="clone-code"
+                ><code>git clone https://github.com/BrUn3y/remote_bob.git
+cd remote_bob
+cp .env.example .env</code></pre>
+                <button
+                  class="copy-button"
+                  type="button"
+                  data-copy="clone-code"
+                  aria-label="Copiar comandos de configuración"
+                >
+                  <svg class="icon"><use href="#i-copy" /></svg>
+                </button>
+              </div>
+              <a href="https://bob.ibm.com/" class="text-link"
+                >Obtener una API key<svg class="icon">
+                  <use href="#i-external" /></svg
+              ></a>
+            </li>
+            <li>
+              <div class="step-heading">
+                <span>02</span>
+                <h3>Levanta el contenedor</h3>
+              </div>
+              <p>
+                Inicia la API y, si configuraste sus tokens, el bot de Slack.
+              </p>
+              <div class="quick-code">
+                <pre
+                  tabindex="0"
+                  id="compose-code"
+                ><code><span data-engine-command>podman</span> compose up --build -d</code></pre>
+                <button
+                  class="copy-button"
+                  type="button"
+                  data-copy="compose-code"
+                  aria-label="Copiar comando de inicio"
+                >
+                  <svg class="icon"><use href="#i-copy" /></svg>
+                </button>
+              </div>
+              <span class="step-detail"
+                >Los archivos persisten en <code>./workspace</code>.</span
+              >
+            </li>
+            <li>
+              <div class="step-heading">
+                <span>03</span>
+                <h3>Comprueba y explora</h3>
+              </div>
+              <p>
+                Consulta el estado y abre Swagger en
+                <code>localhost:8080/docs</code>.
+              </p>
+              <div class="quick-code">
+                <pre
+                  tabindex="0"
+                  id="health-code"
+                ><code>curl http://localhost:8080/health</code></pre>
+                <button
+                  class="copy-button"
+                  type="button"
+                  data-copy="health-code"
+                  aria-label="Copiar comando de verificación"
+                >
+                  <svg class="icon"><use href="#i-copy" /></svg>
+                </button>
+              </div>
+              <span class="step-detail"
+                >Tu API está en el puerto <code>8080</code>.</span
+              >
+            </li>
+          </ol>
+          <div class="setup-note">
+            <span aria-hidden="true">i</span>
+            <p>
+              El modo <code>unrestricted-dev</code> permite ejecutar comandos en
+              el contenedor. Úsalo en un entorno aislado, con canales de Slack
+              de confianza y la API accesible solo desde localhost.
+              <a
+                href="https://github.com/BrUn3y/remote_bob/blob/anin/README.md#9-security"
+                >Revisar configuración de seguridad<svg class="icon">
+                  <use href="#i-external" /></svg
+              ></a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="recursos"
+        class="section page-width"
+        aria-labelledby="resources-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow section-number">05 / SIGUE EXPLORANDO</p>
+            <h2 id="resources-title">Todo para dar<br />el siguiente paso.</h2>
+          </div>
+          <p>
+            Conoce el proyecto, conecta tu equipo y construye tu propio flujo de
+            trabajo.
+          </p>
+        </div>
+        <div class="tutorial-grid">
+          <div class="tutorial-copy">
+            <span class="tile-kicker">BOB + SLACK</span>
+            <h3>Del canal<br />a la acción.</h3>
+            <p>
+              Un recorrido por la configuración, las conversaciones con
+              contexto, los archivos y las tareas recurrentes.
+            </p>
+            <div class="video-meta">
+              <span>01:50</span><span>En inglés · sin audio</span>
+            </div>
+            <p class="illustration-note">
+              Demostración ilustrativa basada en v1.0.4.
+            </p>
+            <a
+              class="text-link"
+              href="https://github.com/BrUn3y/remote_bob/blob/anin/SLACK_SETUP.md"
+              >Ver guía de Slack<svg class="icon"><use href="#i-arrow" /></svg
+            ></a>
+          </div>
+          <video
+            controls
+            preload="none"
+            playsinline
+            poster="media/remote-bob-slack-en-poster.jpg"
+            aria-label="Tutorial ilustrativo de Remote Bob en Slack, en inglés y sin audio"
+          >
+            <source src="media/remote-bob-slack-en.mp4" type="video/mp4" />
+            <p>
+              <a href="media/remote-bob-slack-en.mp4"
+                >Descargar el tutorial de Slack</a
+              >
+            </p>
+          </video>
+        </div>
+        <div class="resource-grid">
+          <a href="https://github.com/BrUn3y/remote_bob/blob/anin/README.md"
+            ><svg class="feature-icon"><use href="#i-book" /></svg>
+            <h3>Documentación</h3>
+            <p>Instalación, configuración y ejemplos completos.</p>
+            <span class="tile-footer"
+              >Leer el README<svg class="icon">
+                <use href="#i-external" /></svg></span
+          ></a>
+          <a
+            href="https://github.com/BrUn3y/remote_bob/blob/anin/httpie/remote_bob.postman_collection.json"
+            ><svg class="feature-icon"><use href="#i-code" /></svg>
+            <h3>Prueba la API</h3>
+            <p>Importa la colección de Postman y explora los endpoints.</p>
+            <span class="tile-footer"
+              >Abrir colección<svg class="icon">
+                <use href="#i-external" /></svg></span
+          ></a>
+          <a href="https://github.com/BrUn3y/remote_bob/issues"
+            ><svg class="feature-icon"><use href="#i-github" /></svg>
+            <h3>Construyamos juntos</h3>
+            <p>Comparte ideas, reporta problemas y contribuye al proyecto.</p>
+            <span class="tile-footer"
+              >Ir a GitHub Issues<svg class="icon">
+                <use href="#i-external" /></svg></span
+          ></a>
+        </div>
+      </section>
+      <div class="closing-banner">
+        <div class="page-width">
+          <svg class="closing-spark"><use href="#i-spark" /></svg>
+          <p>Una idea es solo el comienzo.</p>
+          <a href="#comenzar"
+            >Pon a Bob en marcha<svg class="icon"><use href="#i-arrow" /></svg
+          ></a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer page-width">
+      <div>
+        <a class="footer-brand" href="#inicio"
+          >Remote <strong>Bob</strong
+          ><svg class="icon"><use href="#i-spark" /></svg
+        ></a>
+        <p>
+          Un harness para IBM Bob Shell.<br />Creado por
+          <a href="https://github.com/BrUn3y">Edgar Bruney</a>.
+        </p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/BrUn3y/remote_bob"
+          >GitHub<svg class="icon"><use href="#i-external" /></svg></a
+        ><a
+          href="https://www.carbondesignsystem.com/building-blocks/foundations/carbon-for-ai"
+          >Diseñado con inspiración en Carbon for AI<svg class="icon">
+            <use href="#i-external" /></svg
+        ></a>
+        <p>Proyecto de la comunidad. No es un sitio oficial de IBM.</p>
+      </div>
+    </footer>
+    <div
+      id="announcement"
+      class="announcement"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </body>
+</html>

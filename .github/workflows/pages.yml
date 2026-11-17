@@ -1,0 +1,46 @@
+name: Deploy project website
+
+on:
+  push:
+    branches: [anin]
+    paths:
+      - docs/site/**
+      - docs/media/**
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/anin'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Prepare static website
+        run: |
+          mkdir -p _site/media
+          cp -R docs/site/. _site/
+          cp docs/media/remote-bob-slack-en-poster.jpg _site/media/
+          cp docs/media/remote-bob-slack-en.mp4 _site/media/
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
