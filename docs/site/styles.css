@@ -185,16 +185,6 @@ svg {
   font-size: 16px;
   letter-spacing: 0.1px;
 }
-.brand-divider {
-  height: 17px;
-  width: 1px;
-  margin: 0 13px;
-  background: #6f6f6f;
-}
-.brand-caption {
-  font-size: 12px;
-  color: #c6c6c6;
-}
 .desktop-nav {
   display: flex;
   align-items: stretch;
@@ -1242,10 +1232,6 @@ pre code {
   .brand {
     padding-inline: 20px;
   }
-  .brand-caption,
-  .brand-divider {
-    display: none;
-  }
   .desktop-nav {
     margin-left: 0;
   }
@@ -1357,14 +1343,6 @@ pre code {
   }
   .menu-toggle {
     display: flex;
-  }
-  .brand-caption {
-    display: inline;
-    font-size: 10px;
-  }
-  .brand-divider {
-    display: block;
-    margin-inline: 8px;
   }
   .brand {
     padding-inline: 16px;
@@ -1594,10 +1572,6 @@ pre code {
 @media (max-width: 540px) {
   .page-width {
     width: calc(100% - 32px);
-  }
-  .brand-caption,
-  .brand-divider {
-    display: none;
   }
   .theme-switch {
     padding-inline: 5px;
